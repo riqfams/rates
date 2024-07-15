@@ -8,8 +8,8 @@
                 <i class="ki-outline ki-abstract-14 fs-2"></i>
             </div>
             <a href="{{ route('dashboard') }}" class="app-sidebar-logo">
-              <img alt="Logo" src="{{asset('assets/media/logos/logo.png') }}" class="h-35px theme-light-show" />
-              <img alt="Logo" src="{{asset('assets/media/logos/logo.png') }}" class="h-35px theme-dark-show" />
+                {{-- <img alt="Logo" src="{{asset('assets/media/logos/logo.png') }}" class="h-35px theme-light-show" />
+                <img alt="Logo" src="{{asset('assets/media/logos/logo.png') }}" class="h-35px theme-dark-show" /> --}}
             </a>
         </div>
 

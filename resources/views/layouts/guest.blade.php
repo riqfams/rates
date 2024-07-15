@@ -91,25 +91,25 @@
 					<!--begin::Content-->
 					<div class="d-flex flex-column flex-center py-15 py-lg-15 px-5 px-md-15 w-100">
 						<!--begin::Logo-->
-						<a href="{{route('login')}}" class="mb-0 mb-lg-12">
+						{{-- <a href="{{route('login')}}" class="mb-0 mb-lg-12">
 							<img alt="Logo" src="{{asset('assets/media/logos/logo.png') }}" class="h-60px h-lg-75px" />
-						</a>
+						</a> --}}
 						<!--end::Logo-->
 						<!--begin::Image-->
-						<img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" style="max-width: 30rem" src="{{asset('assets/media/misc/image.gif')}}" alt="" />
+						{{-- <img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" style="max-width: 30rem" src="{{asset('assets/media/misc/image.gif')}}" alt="" /> --}}
 						<!--end::Image-->
 						<!--begin::Title-->
 						<h1 class="d-none d-lg-block text-black fs-2qx fw-bolder text-center mb-7">Smart Website System</h1>
 						<!--end::Title-->
 						<!--begin::Text-->
-            <div class="d-none d-lg-block text-black fs-base text-center">sistem smart akuntansi
+            {{-- <div class="d-none d-lg-block text-black fs-base text-center">sistem smart akuntansi
 						<a href="#" class="opacity-75-hover text-danger fw-bold me-1">yang terintegrasi</a>
 						<br />dengan operasional bisnis anda</div>
 						<!--end::Text-->
 					</div>
 					<!--end::Content-->
 				</div>
-			</div>
+			</div> --}}
 		</div>
 
 		<script src="{{asset('assets/plugins/global/plugins.bundle.js') }}"></script>
