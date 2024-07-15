@@ -26,9 +26,10 @@ return new class extends Migration
             $table->float('ltv_85_90')->nullable();
             $table->float('ltv_90_95')->nullable();
             $table->float('ltv_95_100')->nullable();
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('lender_id')->references('id')->on('lenders')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

@@ -17,9 +17,10 @@ return new class extends Migration
             $table->integer('fico_range_low');
             $table->integer('fico_range_high');
             $table->text('adjustment');
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('lender_id')->references('id')->on('lenders')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

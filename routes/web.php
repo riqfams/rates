@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Accounts\ProfileController;
+use App\Http\Controllers\LenderController;
 use App\Http\Controllers\Resources\PermissionController;
 
 /*
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+
+    Route::resource('lenders', LenderController::class);
 
 });
 

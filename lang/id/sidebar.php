@@ -14,6 +14,7 @@ return [
     */
 
     'dashboard'                             => 'Dashboard',
+    'lender'                                => 'Lenders',
     'web'                            => 'Menu',
     'web.general-ledger'             => 'Jurnal Umum',
     'web.chart-of-account'           => 'Bagan Akun',

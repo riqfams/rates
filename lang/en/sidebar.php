@@ -14,6 +14,7 @@ return [
     */
 
     'dashboard'                             => 'Dashboards',
+    'lender'                                => 'Lenders',
     'web'                            => 'Website',
     'web.chart-of-account'           => 'Chart of Account',
     'web.general-ledger'             => 'General Ledger',

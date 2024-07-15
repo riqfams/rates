@@ -15,14 +15,15 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('lender_id');
             $table->float('rate');
-            $table->float('15days');
-            $table->float('30days');
-            $table->float('45days');
+            $table->float('days15');
+            $table->float('days30');
+            $table->float('days45');
             $table->float('margin');
             $table->float('total_rate');
+            $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('lender_id')->references('id')->on('lenders')->onDelete('cascade');
-            $table->timestamps();
         });
     }
 

@@ -43,6 +43,11 @@ class PermissionTableSeeder extends Seeder
             ['id' => 18, 'name' => 'config-edit'],
             ['id' => 19, 'name' => 'config-delete'],
 
+            ['id' => 20,  'name' => 'lenders-view'],
+            ['id' => 21,  'name' => 'lenders-create'],
+            ['id' => 22,  'name' => 'lenders-edit'],
+            ['id' => 23,  'name' => 'lenders-delete'],
+            ['id' => 24,  'name' => 'lenders-show'],
         ];
 
             foreach ($permissions as $item) {

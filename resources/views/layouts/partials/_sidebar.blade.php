@@ -10,6 +10,17 @@
                 </a>
             </div>
 
+            @can('lenders-view')
+                <div class="menu-item">
+                    <a class="menu-link {{ request()->is(['lenders', 'lenders/*']) ? 'active ' : '' }}" href="{{ route('lenders.index') }}">
+                        <span class="menu-icon">
+                            <i class="fas fa-th fs-2"></i>
+                        </span>
+                        <span class="menu-title">{{ __('sidebar.lender') }}</span>
+                    </a>
+                </div>
+            @endcan
+
             {{-- @canany(['roles-view', 'permission-view'])
                 <div data-kt-menu-trigger="click" class="menu-item menu-accordion {{ request()->is(['master', 'master/*']) ? 'here show' : '' }}">
                     <span class="menu-link">
