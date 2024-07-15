@@ -30,8 +30,9 @@ class LenderController extends Controller
         return view('pages.lenders.index', compact('lenders'));
     }
 
-    public function show() {
-
+    public function show($id) {
+        $lender = Lender::findOrFail($id);
+        return view('pages.lenders.show', compact('lender'));
     }
 
     public function create()
@@ -242,5 +243,12 @@ class LenderController extends Controller
         }
 
         return redirect()->route('lenders.index')->with('success', 'Lender added successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $lender = Lender::findOrFail($id);
+        $lender->delete();
+        return redirect()->route('lenders.index')->with('success', 'Lender deleted successfully.');
     }
 }

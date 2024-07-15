@@ -131,7 +131,7 @@
                                 <tbody>
                                     @foreach ($lender->creditAndLtvs as $credit)
                                         <tr>
-                                            <td>{{ $credit->credit_range }}</td>
+                                            <td>{{ str_replace('_', ' ', $credit->credit_range) }}</td>
                                             @for ($i = 0; $i < 11; $i++)
                                                 <td><input type="number" name="credit_{{ $credit->credit_range }}[]" class="form-control border border-white" value="{{ $credit->{'ltv_' . ($i == 0 ? $i * 5 : $i * 5 + 45) . '_' . ($i * 5 + 50)} }}" step="0.01" required></td>
                                             @endfor
