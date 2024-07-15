@@ -26,6 +26,11 @@ class Lender extends Model
         return $this->hasMany(FicoAdjustment::class);
     }
 
+    public function additionalAdjustments()
+    {
+        return $this->hasMany(AdditionalAdjustment::class);
+    }
+
     public function loanAmountAdjustments()
     {
         return $this->hasMany(LoanAmountAdjustment::class);

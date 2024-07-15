@@ -12,7 +12,7 @@
                 <div class="page-title d-flex flex-column justify-content-center gap-1 me-3">
                     <!--begin::Title-->
                     <h1 class="page-heading d-flex flex-column justify-content-center text-dark fw-bold fs-3 m-0">
-                        {{ __('Create Lender') }}
+                        {{ __('Edit Lender') }}
                     </h1>
                     <!--end::Title-->
                 </div>
@@ -28,8 +28,9 @@
         <div id="kt_app_content_container" class="app-container container-fluid" style="padding-left: 0px!important; padding-right: 0px!important">
             <!--begin::Card-->
             <div class="card">
-            <form id="kt_modal_add_lender_form" class="form" action="{{ route('lenders.store') }}" method="POST" enctype="multipart/form-data">
+            <form id="kt_modal_add_lender_form" class="form" action="{{ route('lenders.update', $lender->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
                 {{-- begin::Add Lender --}}
                 <div class="card-body py-4 my-5">
 
@@ -37,20 +38,20 @@
                         <label class="required fw-semibold fs-6 mb-2">Lender Name</label>
                         <input type="text" name="name" id="name"
                             class="form-control form-control-solid mb-3 mb-lg-0 {{ $errors->get("name") ? "is-invalid border border-1 border-danger" : "" }}" placeholder="Lender Name"
-                            value="{{ old('name') }}" required />
+                            value="{{ $lender->name }}" />
                         <x-input-error class="mt-2" :messages="$errors->get('name')" />
                     </div>
                     
                     <div class="mb-7">
                         <label class="required fw-semibold fs-6 mb-2">Purpose</label>
                         <select name="purpose" id="purpose"
-                            class="form-select form-select-solid mb-3 mb-lg-0 {{ $errors->get('purpose') ? 'is-invalid border border-1 border-danger' : '' }}" required>
+                            class="form-select form-select-solid mb-3 mb-lg-0 {{ $errors->get('purpose') ? 'is-invalid border border-1 border-danger' : '' }}">
                             <option value="">Select Purpose</option>
-                            <option value="Purchase">Purchase</option>
-                            <option value="Rate/Term">Rate/Term</option>
-                            <option value="Cashout">Cashout</option>
-                            <option value="HELOC">HELOC</option>
-                            <option value="Second">Second</option>
+                            <option value="Purchase" {{ (old('purpose', $lender->purpose) == 'Purchase') ? 'selected' : '' }}>Puschase</option>
+                            <option value="Rate/Term" {{ (old('purpose', $lender->purpose) == 'Rate/Term') ? 'selected' : '' }}>Rate/Term</option>
+                            <option value="Cashout" {{ (old('purpose', $lender->purpose) == 'Cashout') ? 'selected' : '' }}>Cashout</option>
+                            <option value="HELOC" {{ (old('purpose', $lender->purpose) == 'HELOC') ? 'selected' : '' }}>HELOC</option>
+                            <option value="Second" {{ (old('purpose', $lender->purpose) == 'Second') ? 'selected' : '' }}>Second</option>
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('purpose')" />
                     </div>
@@ -58,14 +59,14 @@
                     <div class="mb-7">
                         <label class="required fw-semibold fs-6 mb-2">Product</label>
                         <select name="product" id="product"
-                            class="form-select form-select-solid mb-3 mb-lg-0 {{ $errors->get('product') ? 'is-invalid border border-1 border-danger' : '' }}" required>
+                            class="form-select form-select-solid mb-3 mb-lg-0 {{ $errors->get('product') ? 'is-invalid border border-1 border-danger' : '' }}">
                             <option value="">Select Product</option>
-                            <option value="Conventional">Conventional</option>
-                            <option value="FHA">FHA</option>
-                            <option value="VA">VA</option>
-                            <option value="HELOC">HELOC</option>
-                            <option value="Second">Second</option>
-                            <option value="Non-QM">Non-QM</option>
+                            <option value="Conventional" value="Purchase" {{ (old('product', $lender->product) == 'Conventional') ? 'selected' : '' }}>Conventional</option>
+                            <option value="FHA" value="Purchase" {{ (old('product', $lender->product) == 'FHA') ? 'selected' : '' }}>FHA</option>
+                            <option value="VA" value="Purchase" {{ (old('product', $lender->product) == 'VA') ? 'selected' : '' }}>VA</option>
+                            <option value="HELOC" value="Purchase" {{ (old('product', $lender->product) == 'HELOC') ? 'selected' : '' }}>HELOC</option>
+                            <option value="Second" value="Purchase" {{ (old('product', $lender->product) == 'Second') ? 'selected' : '' }}>Second</option>
+                            <option value="Non-QM" value="Purchase" {{ (old('product', $lender->product) == 'Non-QM') ? 'selected' : '' }}>Non-QM</option>
                         </select>
                         <x-input-error class="mt-2" :messages="$errors->get('product')" />
                     </div>
@@ -88,15 +89,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input type="number" name="rates[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><input type="number" name="days15[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><input type="number" name="days30[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><input type="number" name="days45[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><input type="number" name="margin[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><input type="number" name="total_rate[]" class="form-control border border-white" step="0.01" required></td>
-                                    <td><button type="button" class="btn btn-danger" onclick="deleteRowRates(this)">Delete</button></td>
-                                </tr>
+                                @foreach ($lender->rates as $rate)
+                                    <tr>
+                                        <td><input type="number" value="{{ $rate->rate }}" name="rates[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><input type="number" value="{{ $rate->days15 }}" name="days15[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><input type="number" value="{{ $rate->days30 }}" name="days30[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><input type="number" value="{{ $rate->days45 }}" name="days45[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><input type="number" value="{{ $rate->margin }}" name="margin[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><input type="number" value="{{ $rate->total_rate }}" name="total_rate[]" class="form-control border border-white" step="0.01" required></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRowRates(this)">Delete</button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -126,15 +129,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($credits as $credit)
+                                    @foreach ($lender->creditAndLtvs as $credit)
                                         <tr>
-                                            <td>{{ $credit }}</td>
+                                            <td>{{ $credit->credit_range }}</td>
                                             @for ($i = 0; $i < 11; $i++)
-                                                <td><input type="number" name="credit_{{ $credit }}[]" class="form-control border border-white" step="0.01" required></td>
+                                                <td><input type="number" name="credit_{{ $credit->credit_range }}[]" class="form-control border border-white" value="{{ $credit->{'ltv_' . ($i == 0 ? $i * 5 : $i * 5 + 45) . '_' . ($i * 5 + 50)} }}" step="0.01" required></td>
                                             @endfor
                                         </tr>
                                     @endforeach
-                                </tbody>
+                                </tbody>                    
                             </table>
                         </div>
             
@@ -155,12 +158,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input type="number" name="low[]" class="form-control border border-white" step="1" required></td>
-                                    <td><input type="number" name="high[]" class="form-control border border-white" step="1" required></td>
-                                    <td><input type="text" name="adjustment[]" class="form-control border border-white" required></td>
-                                    <td><button type="button" class="btn btn-danger" onclick="deleteRowLoans(this)">Delete</button></td>
-                                </tr>
+                                @foreach ($lender->loanAmountAdjustments as $loan)
+                                    <tr>
+                                        <td><input type="number" value="{{ $loan->loan_amount_low }}" name="low[]" class="form-control border border-white" step="1" required></td>
+                                        <td><input type="number" value="{{ $loan->loan_amount_high }}" name="high[]" class="form-control border border-white" step="1" required></td>
+                                        <td><input type="text" value="{{ $loan->adjustment }}" name="adjustment[]" class="form-control border border-white" required></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRowLoans(this)">Delete</button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -181,12 +186,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td><input type="number" name="fico_low[]" class="form-control border border-white" step="1" required></td>
-                                    <td><input type="number" name="fico_high[]" class="form-control border border-white" step="1" required></td>
-                                    <td><input type="text" name="fico_adjustment[]" class="form-control border border-white" required></td>
-                                    <td><button type="button" class="btn btn-danger" onclick="deleteRowFicos(this)">Delete</button></td>
-                                </tr>
+                                @foreach ($lender->ficoAdjustments as $fico)
+                                    <tr>
+                                        <td><input type="number" value="{{ $fico->fico_range_low }}" name="fico_low[]" class="form-control border border-white" step="1" required></td>
+                                        <td><input type="number" value="{{ $fico->fico_range_high }}" name="fico_high[]" class="form-control border border-white" step="1" required></td>
+                                        <td><input type="text" value="{{ $fico->adjustment }}" name="fico_adjustment[]" class="form-control border border-white" required></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRowFicos(this)">Delete</button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -208,27 +215,29 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <select name="option[]" id="option" class="form-control border border-white" required>
-                                            <option value="LTV">LTV</option>
-                                            <option value="DTI">DTI</option>
-                                            <option value="Occupancy">Occupancy</option>
-                                            <option value="Property Type">Property Type</option>
-                                            <option value="Term">Term</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <select name="operand[]" id="operand" class="form-control border border-white" required>
-                                            <option value="Greater than">Greater than</option>
-                                            <option value="Less than">Less than</option>
-                                            <option value="Equal to">Equal to</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" name="value[]" class="form-control border border-white" required></td>
-                                    <td><input type="text" name="additional_adjustment[]" class="form-control border border-white" required></td>
-                                    <td><button type="button" class="btn btn-danger" onclick="deleteRowAdditional(this)">Delete</button></td>
-                                </tr>
+                                @foreach ($lender->additionalAdjustments as $additional)
+                                    <tr>
+                                        <td>
+                                            <select name="option[]" id="option" class="form-control border border-white" required>
+                                                <option value="LTV" {{ $additional->option == 'LTV' ? 'selected' : '' }}>LTV</option>
+                                                <option value="DTI" {{ $additional->option == 'DTI' ? 'selected' : '' }}>DTI</option>
+                                                <option value="Occupancy" {{ $additional->option == 'Occupancy' ? 'selected' : '' }}>Occupancy</option>
+                                                <option value="Property Type" {{ $additional->option == 'Property Type' ? 'selected' : '' }}>Property Type</option>
+                                                <option value="Term" {{ $additional->option == 'Term' ? 'selected' : '' }}>Term</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <select name="operand[]" id="operand" class="form-control border border-white" required>
+                                                <option value="Greater than" {{ $additional->operand == 'Greater than' ? 'selected' : '' }}>Greater than</option>
+                                                <option value="Less than" {{ $additional->operand == 'Less than' ? 'selected' : '' }}>Less than</option>
+                                                <option value="Equal to" {{ $additional->operand == 'Equal to' ? 'selected' : '' }}>Equal to</option>
+                                            </select>
+                                        </td>
+                                        <td><input type="text" value="{{ $additional->value }}" name="value[]" class="form-control border border-white" required></td>
+                                        <td><input type="text" value="{{ $additional->adjustment }}" name="additional_adjustment[]" class="form-control border border-white" required></td>
+                                        <td><button type="button" class="btn btn-danger" onclick="deleteRowAdditional(this)">Delete</button></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>                    
@@ -289,10 +298,10 @@
             var table = document.getElementById("loansTable");
             var row = table.insertRow();
             row.innerHTML = `
-                    <td><input type="number" name="low[]" class="form-control border border-white" step="1" required></td>
-                    <td><input type="number" name="high[]" class="form-control border border-white" step="1" required></td>
-                    <td><input type="text" name="adjustment[]" class="form-control border border-white" required></td>
-                    <td><button type="button" class="btn btn-danger" onclick="deleteRowLoans(this)">Delete</button></td>
+                <td><input type="number" name="low[]" class="form-control border border-white" step="1" required></td>
+                <td><input type="number" name="high[]" class="form-control border border-white" step="1" required></td>
+                <td><input type="text" name="adjustment[]" class="form-control border border-white" required></td>
+                <td><button type="button" class="btn btn-danger" onclick="deleteRowLoans(this)">Delete</button></td>
             `;
         }
 
