@@ -166,7 +166,6 @@ class LenderController extends Controller
         $days45 = $request->input('days45');
         $margins = $request->input('margin');
         $totalRates = $request->input('total_rate');
-        // dd($request->all());
         for ($i = 0; $i < count($rates); $i++)  {
             $lender->rates()->delete();
             $rateData = new Rate();
@@ -179,7 +178,7 @@ class LenderController extends Controller
             $rateData->total_rate = $totalRates[$i];
             $rateData->save();
         }
-
+        
         $low = $request->input('low');
         $high = $request->input('high');
         $adjustment = $request->input('adjustment');
@@ -193,13 +192,15 @@ class LenderController extends Controller
             $loanAmountData->save();
         }
 
-        $credits = ['800_+', '780_-_799', '760_-_780', '740_-_759', '720_-_739', '700_-_719', '680_-_699', '660_-_679', '620_-_659', '580_-_619', 'less_than_580'];
-        foreach($credits as $credit){
-            $lender->creditAndLtvs()->delete();
-            $credit_ranges = $request->input('credit_' . $credit);
+        $creditAndLtvs = $lender->creditAndLtvs; // Dapatkan data sebelum menghapus
+        $lender->creditAndLtvs()->delete(); // Hapus data yang ada
+
+        foreach($creditAndLtvs as $credit){
+            $credit_ranges = $request->input('credit_' . $credit->credit_range);
+            
             $creditLtv = new CreditAndLtv();
             $creditLtv->lender_id = $lender->id;
-            $creditLtv->credit_range = $credit;
+            $creditLtv->credit_range = $credit->credit_range;
             $creditLtv->ltv_0_50 = $credit_ranges[0];
             $creditLtv->ltv_50_55 = $credit_ranges[1];
             $creditLtv->ltv_55_60 = $credit_ranges[2];
